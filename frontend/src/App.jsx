@@ -1,5 +1,4 @@
 import React from "react";
-// import Homepage from './pages/homepage/homepage';
 import CategorySelect from "./pages/categoryselect/categoryselect";
 import StudentLogin from "./pages/studentlogin/studentlogin";
 import FacultyLogin from "./pages/facultylogin/facultylogin";
