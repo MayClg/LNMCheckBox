@@ -1,0 +1,125 @@
+const router = require("express").Router();
+let Student = require("../schemas/student.schema");
+const passport = require("passport");
+
+// router.route("/").post((req, res) => {
+//   const user = new User({
+//     username: req.body.username,
+//     password: req.body.password,
+//   });
+
+//   req.login(user, function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       passport.authenticate("local")(req, res, function () {
+//         res.redirect("/secrets");
+//       });
+//     }
+//   });
+// });
+
+// router.route("/login").post((req, res) => {
+// const stu = new Student({
+//   studentid: req.body.roll,
+//   password: req.body.pass,
+// });
+// console.log(stu);
+// req.login(stu, function(err){
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     passport.authenticate("local")(req, res, function(){
+//       console.log("hello");
+//       res.redirect("/");
+//     });
+//   }
+// });
+
+// });
+
+// router.post(
+//   '/login',
+//   passport.authenticate('local', {
+//     failureRedirect: '/',
+//     successRedirect: '/',
+//   }),
+//   (req, res) => {
+//     console.log(req.user);
+//   }
+// );
+
+// router.route("/login").post((req, res) => {
+//   console.log(req.body);
+//   // res.send({ title: 'GeeksforGeeks' });
+//   const stu = new Student({
+//     username: req.body.roll,
+//     password: req.body.pass,
+//   });
+//   console.log(stu);
+//   req.login(stu, function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       passport.authenticate("local")(req, res, function () {
+//         console.log("hello");
+//         // res.redirect("/");
+//         res.send({ title: 'GeeksforGeeks' });
+//       });
+//     }
+//   });
+// });
+
+router.post("/student/login", function (req, res) {
+  if (!req.body.username) {
+    res.send({ success: false, message: "Username was not given" });
+  } else if (!req.body.password) {
+    res.send({ success: false, message: "Password was not given" });
+  } else {
+    passport.authenticate("local", function (err, user, info) {
+      if (err) {
+        res.send({ success: false, message: err });
+      } else {
+        if (!user) {
+          console.log(user);
+          res.send({
+            success: false,
+            message: "username or password incorrect",
+          });
+        } else {
+          // const token = jwt.sign({ userId: user._id, username: user.username }, secretkey, { expiresIn: "24h" });
+          // res.json({ success: true, message: "Authentication successful", token: token });
+          res.send({ title: "GeeksforGeeks" });
+        }
+      }
+    })(req, res);
+  }
+});
+
+router.route("/logout").get((req, res) => {
+  req.logout();
+  res.redirect("/");
+});
+
+router.route("/register").post((req, res) => {
+  const stu = new Student({
+    studentid: req.body.roll,
+    name: req.body.name,
+    email: req.body.email,
+  });
+  Student.register(stu, req.body.pass, function (err, user) {
+    if (err) {
+      console.log(err + " haha 1 +++");
+    } else {
+      req.login(user, (er) => {
+        if (er) {
+          console.log(er + " haha 2 +++");
+        } else {
+          console.log(req.user + "   ACCOUNT SAVED   ");
+        }
+      });
+    }
+  });
+});
+
+module.exports = router;

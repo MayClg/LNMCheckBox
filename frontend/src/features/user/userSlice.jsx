@@ -10,6 +10,7 @@ export const USERTYPE = Object.freeze({
 const initialState = {
   userid: '',
   usertype: USERTYPE.NULL,
+  loggedin: false,
 };
 
 export const userSlice = createSlice({
@@ -19,8 +20,16 @@ export const userSlice = createSlice({
     setUserType: (state, action) => {
       state.usertype = action.payload;
     },
+    logout:(state)=>{
+      state.loggedin=false;
+      state.userid='';
+    },
+    login: (state,action)=>{
+      state.loggedin = action.payload.log;
+      state.userid = action.payload.studentid
+    }
   },
 });
 
-export const { setUserType } = userSlice.actions;
+export const { setUserType,login,logout } = userSlice.actions;
 export default userSlice.reducer;

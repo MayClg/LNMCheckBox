@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUserType,USERTYPE,printUserType} from "../../features/user/userSlice";
 import "./categoryselect.css";
 import logo from "./images/logo.jpg";
+import axios from "axios";
 
 const CategorySelect = () => {
     const dispatch = useDispatch();
-
   return (
     <div className="body">
       <main className="form-signin w-100 m-auto text-center">
